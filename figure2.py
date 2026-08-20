@@ -10,8 +10,8 @@ from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 ENV_REAL_CSV = "envelope_dose_finegrid.csv"
 ENV_NULL_CSV = "envelope_2bin_null_finegrid.csv"
 SHAM_CSV = "envelope_eval_sham.csv"
-PCA_REAL_JSON = "eval_v2_dosed.json"
-PCA_SHUF_JSON = "eval_v2_shuffled.json"
+PCA_REAL_JSON = "save/pca/eval_v2_dosed.json"
+PCA_SHUF_JSON = "save/pca/eval_v2_shuffled.json"
 EVAL_SET_CSV = "eval_set_v2.csv"
 
 OUT_PNG = "figure2_main.png"
