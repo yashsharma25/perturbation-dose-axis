@@ -1,0 +1,19 @@
+# data — regenerable or huge, never in git
+*.h5ad
+*.pt
+*.safetensors
+*.csv
+*.log
+*.err
+*.json
+*.jsonl
+runs/
+save/
+checkpoints/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+src/
+slurm/
+*.sh
+*.lock

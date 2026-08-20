@@ -1,0 +1,12 @@
+# Dataset paths - maps dataset names to their directories
+[datasets]
+xatlas = "/research/projects/rna_lab/perturb_benchmark/state/state_step4_test.h5ad"
+
+
+# Zeroshot specifications - entire cell types go to val or test
+[zeroshot]
+"xatlas.jurkat" = "test"
+
+
+# To enable cell barcode output, add data.kwargs.barcode=true to your command line:
+# data.kwargs.barcode=true
