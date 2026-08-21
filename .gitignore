@@ -17,3 +17,21 @@ src/
 slurm/
 *.sh
 *.lock
+*.out
+*.err
+*.png
+*.pdf
+*.bak
+
+# superseded scripts kept on disk but out of git
+dose_envelope.py
+envelope_eval_set.py
+nsr_rho_screen_2.py
+build_eval_set.py
+figure1.py
+perturb_trainingscGPTOfficial.py
+screen.py
+validate.py
+batch_check.py
+figure1_main.png
+scripts/

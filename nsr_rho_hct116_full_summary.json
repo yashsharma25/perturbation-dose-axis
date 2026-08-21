@@ -1,0 +1,27 @@
+{
+  "nsr_cutoff": 1.0104434320006708,
+  "rho_cutoff": 0.04909412169955417,
+  "screened": 6328,
+  "retained": 3481,
+  "retained_fraction": 0.5500948166877371,
+  "rho_rescued": 435,
+  "frozen_screened": 200,
+  "frozen_retained": 152,
+  "effective_sample_size": 152,
+  "config": {
+    "h5ad": "/research/projects/rna_lab/x-atlas/HCT116_filtered_dual.h5ad",
+    "guide_calls": "/research/projects/rna_lab/x-atlas/HCT116_filtered_guide_calls_per_cell.csv",
+    "split": "screen_hct116_split.csv",
+    "eval_set": "eval_set_hct116_eval_set.csv",
+    "old_screen": "screen_hct116_ranked.csv",
+    "dose_bins": 2,
+    "min_cells_per_bin": 30,
+    "min_cells_screen": 12,
+    "max_cells_screen": 200,
+    "max_perturbations": 20000,
+    "n_control_cells": 3000,
+    "n_null_draws": 300,
+    "seed": 42,
+    "out": "nsr_rho_hct116_full"
+  }
+}

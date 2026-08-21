@@ -1,0 +1,30 @@
+{
+  "nsr_cutoff": 1.0671335854129813,
+  "rho_cutoff": 0.11225786721415656,
+  "screened": 17879,
+  "retained": 6544,
+  "retained_fraction": 0.36601599642038146,
+  "rho_rescued": 361,
+  "frozen_screened": 800,
+  "frozen_retained": 335,
+  "effective_sample_size": 334,
+  "config": {
+    "h5ad": "/research/projects/rna_lab/x-atlas/HEK293T_filtered_dual_guide_cells.h5ad",
+    "guide_calls": "/research/projects/rna_lab/x-atlas/HEK293T_filtered_guide_calls_per_cell.csv",
+    "split": "split_hek_v2.csv",
+    "eval_set": "eval_set_v2.csv",
+    "old_screen": null,
+    "dose_bins": 2,
+    "min_cells_per_bin": 30,
+    "min_cells_screen": 12,
+    "max_cells_screen": 200,
+    "max_perturbations": 0,
+    "n_control_cells": 3000,
+    "n_null_draws": 300,
+    "size_matched_null": false,
+    "memory_budget_gb": 8.0,
+    "max_elements_per_read": 8000000,
+    "seed": 42,
+    "out": "nsr_rho_hek"
+  }
+}
