@@ -2,7 +2,7 @@ import json
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from mpl_toolkits.axes_grid1.inset_locator import inset_axes
+# (inset_axes no longer used; panel D uses a stacked subgrid instead)
 
 # ============================================================
 # Paths
@@ -45,12 +45,12 @@ ENV_LABELS = {
     "near_null": "Near-null",
 }
 
-EVAL_ORDER = ["strong_nsr", "mid_nsr", "rho_only", "near_null"]
+EVAL_ORDER = ["strong_nsr", "mid_nsr", "rho_only", "null_stratum"]
 EVAL_LABELS = {
     "strong_nsr": "Strong\nNSR",
     "mid_nsr": "Mid\nNSR",
     "rho_only": r"$\rho$-only",
-    "near_null": "Near-null",
+    "null_stratum": "Null",
 }
 
 
@@ -114,7 +114,7 @@ def load_pca_gap_table(json_path):
     wide["gap"] = wide["bin1"] - wide["bin0"]
 
     meta = pd.read_csv(EVAL_SET_CSV)
-    meta["stratum"] = meta["stratum"].fillna("near_null")
+    meta["stratum"] = meta["stratum"].fillna("null_stratum")
 
     return wide.merge(
         meta[["gene_target", "stratum"]],
@@ -360,8 +360,17 @@ def plot_panel_c(ax, env_real_gap, env_null_gap):
 # Panel D: PCA dose-score gaps
 # ============================================================
 def plot_panel_d(ax, pca_real, pca_shuffled):
+    # Split panel D's cell into a tall distribution plot and a short medians
+    # strip beneath it. An overlaid inset obscured two of the four strata and
+    # rendered outside the panel bounds, so the medians get their own axes.
+    subgrid = ax.get_subplotspec().subgridspec(2, 1, height_ratios=[3, 1], hspace=0.08)
+    figure = ax.get_figure()
+    ax.remove()
+    ax_dist = figure.add_subplot(subgrid[0])
+    ax_median = figure.add_subplot(subgrid[1], sharex=ax_dist)
+
     observed_data, shuffled_data, base = grouped_boxplot(
-        ax,
+        ax_dist,
         pca_real,
         pca_shuffled,
         order=EVAL_ORDER,
@@ -370,24 +379,26 @@ def plot_panel_d(ax, pca_real, pca_shuffled):
         title="PCA dose-score gaps vs shuffled control",
         ylim=(-1.70, 1.70),
     )
-
-    # Small inset: medians on a readable vertical scale.
-    inset = inset_axes(ax, width="45%", height="38%", loc="upper right", borderpad=1.2)
+    ax_dist.set_xlabel("")
+    plt.setp(ax_dist.get_xticklabels(), visible=False)
 
     observed_medians = [np.median(values) for values in observed_data]
     shuffled_medians = [np.median(values) for values in shuffled_data]
 
-    inset.plot(base, observed_medians, "o-", color=BLUE, linewidth=1.2, markersize=4)
-    inset.plot(base, shuffled_medians, "o--", color=GRAY, linewidth=1.1, markersize=4)
-    inset.axhline(0, color="black", linewidth=0.7)
-    inset.set_xticks([])
-    inset.set_ylabel("Median gap", fontsize=8)
-    inset.tick_params(axis="y", labelsize=7)
-    inset.set_title("Medians", fontsize=8)
-    inset.spines["top"].set_visible(False)
-    inset.spines["right"].set_visible(False)
+    ax_median.plot(base, observed_medians, "o-", color=BLUE, linewidth=1.4,
+                   markersize=5, label="Observed dose")
+    ax_median.plot(base, shuffled_medians, "o--", color=GRAY, linewidth=1.2,
+                   markersize=5, label="Dose-shuffled control")
+    ax_median.axhline(0, color="black", linewidth=0.9)
+    ax_median.set_xticks(base)
+    ax_median.set_xticklabels([EVAL_LABELS[s] for s in EVAL_ORDER])
+    ax_median.set_ylabel("Median\ngap", fontsize=9)
+    ax_median.tick_params(axis="y", labelsize=8)
+    ax_median.spines["top"].set_visible(False)
+    ax_median.spines["right"].set_visible(False)
 
-    add_panel_label(ax, "D")
+    add_panel_label(ax_dist, "D")
+    return ax_dist
 
 
 # ============================================================
@@ -396,7 +407,7 @@ def plot_panel_d(ax, pca_real, pca_shuffled):
 def make_figure2():
     data = load_figure2_data()
 
-    fig, axes = plt.subplots(2, 2, figsize=(13.2, 8.8))
+    fig, axes = plt.subplots(2, 2, figsize=(13.2, 9.4), layout="constrained")
 
     plot_panel_a(axes[0, 0], data["sham"])
     plot_panel_b(axes[0, 1], data["env_real"])
@@ -411,7 +422,7 @@ def make_figure2():
         data["pca_shuffled"],
     )
 
-    fig.tight_layout(h_pad=2.0, w_pad=2.0)
+    # constrained layout handles the nested subgrid in panel D
     fig.savefig(OUT_PNG, bbox_inches="tight")
     fig.savefig(OUT_PDF, bbox_inches="tight")
     plt.close(fig)
