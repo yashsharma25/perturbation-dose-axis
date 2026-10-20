@@ -1,4 +1,5 @@
-# To average or not to average: realized perturbation dose is a hidden axis in gene perturbation benchmarking
+# Averaging in gene perturbation benchmarks hides perturbation-strength variation:
+Consequences for model evaluation
 
 Code and analysis for our study of **realized perturbation strength as a hidden source of heterogeneity in single-cell perturbation benchmarks**.
 
